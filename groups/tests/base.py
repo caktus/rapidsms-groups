@@ -61,6 +61,10 @@ class CreateDataTest(TestCase):
         return Group.objects.create(**defaults)
 
 
+class SettingDoesNotExist:
+    pass
+
+
 @contextmanager
 def patch_settings(**kwargs):
     from django.conf import settings
