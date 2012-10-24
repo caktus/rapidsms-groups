@@ -15,11 +15,11 @@ def read_file(filename):
 setup(
     name='rapidsms-groups',
     version=__import__('rapidsms_groups').__version__,
-    author='<Include Your Name Here>',
-    author_email='<Include Your Email Here>',
+    author='Caktus Consulting Group',
+    author_email='solutions@caktusgroup.com',
     packages=find_packages(),
     include_package_data=True,
-    url='<Include Link to Project>',
+    url='http://github.com/caktus/rapidsms-groups/',
     license='<Include License Name>',
     description=u' '.join(__import__('rapidsms_groups').__doc__.splitlines()).strip(),
     classifiers=[
