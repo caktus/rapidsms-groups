@@ -13,7 +13,7 @@ def read_file(filename):
 
 
 setup(
-    name='django-rapidsms_groups',
+    name='rapidsms-groups',
     version=__import__('rapidsms_groups').__version__,
     author='<Include Your Name Here>',
     author_email='<Include Your Email Here>',
