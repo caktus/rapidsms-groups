@@ -1,1 +1,1 @@
-from .tests imprt *
+from .tests import *
