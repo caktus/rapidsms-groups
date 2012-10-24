@@ -3,18 +3,18 @@ import re
 
 from django import forms
 
-from aremind.apps.groups.models import Group
-from aremind.apps.groups.utils import format_number
-from aremind.apps.groups.validators import validate_phone
+from groups.models import Group
+from groups.utils import format_number
+from groups.validators import validate_phone
 
 
-from rapidsms.models import Contact, Backend
+from rapidsms.models import Contact
 
 
 __all__ = ('GroupForm', 'ContactForm', 'ForwardingRuleFormset',)
 
 
-logger = logging.getLogger('aremind.apps.groups.forms')
+logger = logging.getLogger('groups.forms')
 
 
 class FancyPhoneInput(forms.TextInput):
