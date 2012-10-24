@@ -3,11 +3,8 @@ import random
 from contextlib import contextmanager
 
 from django.test import TestCase
-from django.db import DEFAULT_DB_ALIAS
-from django.core.management import call_command
 
 from rapidsms.models import Connection, Contact, Backend
-from threadless_router.tests.scripted import TestScript
 
 from groups.models import Group
 
@@ -28,8 +25,8 @@ class CreateDataTest(TestCase):
 
     def random_unicode_string(self, max_length=255):
         output = u''
-        for x in xrange(random.randint(1, max_length/2)):
-            c = UNICODE_CHARS[random.randint(0, len(UNICODE_CHARS)-1)]
+        for x in xrange(random.randint(1, max_length / 2)):
+            c = UNICODE_CHARS[random.randint(0, len(UNICODE_CHARS) - 1)]
             output += c + u' '
         return output
 
