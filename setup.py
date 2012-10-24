@@ -14,14 +14,14 @@ def read_file(filename):
 
 setup(
     name='rapidsms-groups',
-    version=__import__('rapidsms_groups').__version__,
+    version=__import__('groups').__version__,
     author='Caktus Consulting Group',
     author_email='solutions@caktusgroup.com',
     packages=find_packages(),
     include_package_data=True,
     url='http://github.com/caktus/rapidsms-groups/',
     license='<Include License Name>',
-    description=u' '.join(__import__('rapidsms_groups').__doc__.splitlines()).strip(),
+    description=u' '.join(__import__('groups').__doc__.splitlines()).strip(),
     classifiers=[
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Intended Audience :: Developers',

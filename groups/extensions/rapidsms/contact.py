@@ -1,6 +1,6 @@
 from django.db import models
 
-from rapidsms_groups.utils import format_number
+from groups.utils import format_number
 
 
 class ContactExtra(models.Model):

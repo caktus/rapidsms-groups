@@ -9,7 +9,7 @@ from django.core.management import call_command
 from rapidsms.models import Connection, Contact, Backend
 from threadless_router.tests.scripted import TestScript
 
-from rapidsms_groups.groups.models import Group
+from groups.models import Group
 
 
 UNICODE_CHARS = [unichr(x) for x in xrange(1, 0xD7FF)]

@@ -7,11 +7,11 @@ from rapidsms.models import Contact
 from rapidsms.tests.harness import MockRouter
 from rapidsms.messages.incoming import IncomingMessage
 
-from rapidsms_groups.tests.base import CreateDataTest, patch_settings
+from .base import CreateDataTest, patch_settings
 
-from rapidsms_groups import forms as group_forms
-from rapidsms_groups.validators import validate_phone
-from rapidsms_groups.app import GroupsApp
+from groups import forms as group_forms
+from groups.validators import validate_phone
+from groups.app import GroupsApp
 
 
 class GroupCreateDataTest(CreateDataTest):
