@@ -15,7 +15,6 @@ if not settings.configured:
         INSTALLED_APPS=(
             'django.contrib.auth',
             'django.contrib.contenttypes',
-	    'taggit',
             'rapidsms',
             'rapidsms.contrib.messagelog',
             'groups',
