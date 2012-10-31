@@ -13,10 +13,19 @@ if not settings.configured:
             }
         },
         INSTALLED_APPS=(
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
+	    'taggit',
+            'rapidsms',
+            'rapidsms.contrib.messagelog',
             'groups',
         ),
         SITE_ID=1,
         SECRET_KEY='this-is-just-for-tests-so-not-that-secret',
+        ROOT_URLCONF='groups.tests.urls',
+
+        RAPIDSMS_TABS=[],
+        INSTALLED_BACKENDS={},
     )
 
 
@@ -32,4 +41,3 @@ def runtests():
 
 if __name__ == '__main__':
     runtests()
-
