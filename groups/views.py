@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
@@ -19,8 +19,7 @@ def list_groups(request):
     context = {
         'groups': groups.order_by('name'),
     }
-    return render_to_response('groups/groups/list.html', context,
-                              context_instance=RequestContext(request))
+    return render(request, 'groups/groups/list.html', context)
 
 
 @login_required
@@ -43,8 +42,7 @@ def create_edit_group(request, group_id=None):
         'form': form,
         'group': group,
     }
-    return render_to_response('groups/groups/create_edit.html', context,
-                              context_instance=RequestContext(request))
+    return render(request, 'groups/groups/create_edit.html', context)
 
 
 @login_required
@@ -58,8 +56,7 @@ def delete_group(request, group_id):
         messages.info(request, 'Group successfully deleted')
         return HttpResponseRedirect(reverse('list-groups'))
     context = {'group': group}
-    return render_to_response('groups/groups/delete.html', context,
-                              RequestContext(request))
+    return render(request, 'groups/groups/delete.html', context)
 
 
 @login_required
@@ -69,8 +66,7 @@ def list_contacts(request):
     context = {
         'contacts': contacts.order_by('name'),
     }
-    return render_to_response('groups/contacts/list.html', context,
-                              context_instance=RequestContext(request))
+    return render(request, 'groups/contacts/list.html', context)
 
 
 @login_required
@@ -91,8 +87,7 @@ def create_edit_contact(request, contact_id=None):
         'form': form,
         'contact': contact,
     }
-    return render_to_response('groups/contacts/create_edit.html', context,
-                              context_instance=RequestContext(request))
+    return render(request, 'groups/contacts/create_edit.html', context)
 
 
 @login_required
@@ -104,5 +99,4 @@ def delete_contact(request, contact_id):
         messages.info(request, 'Contact successfully deleted')
         return HttpResponseRedirect(reverse('list-contacts'))
     context = {'contact': contact}
-    return render_to_response('groups/contacts/delete.html', context,
-                              RequestContext(request))
+    return render(request, 'groups/contacts/delete.html', context)
