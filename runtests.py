@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import optparse
 import sys
 
 from django.conf import settings
@@ -15,16 +16,34 @@ if not settings.configured:
         INSTALLED_APPS=(
             'django.contrib.auth',
             'django.contrib.contenttypes',
+            'django.contrib.sessions',
             'rapidsms',
             'rapidsms.contrib.messagelog',
             'groups',
+            'django_sorting',
+            'pagination',
         ),
+        INSTALLED_BACKENDS={},
+        LOGIN_URL='/account/login/',
+        MIDDLEWARE_CLASSES=[
+            'django.middleware.common.CommonMiddleware',
+            'django.contrib.sessions.middleware.SessionMiddleware',
+            'django.middleware.csrf.CsrfViewMiddleware',
+            'django.contrib.auth.middleware.AuthenticationMiddleware',
+            'django.contrib.messages.middleware.MessageMiddleware',
+            'pagination.middleware.PaginationMiddleware',
+            'django_sorting.middleware.SortingMiddleware',
+        ],
+        RAPIDSMS_TABS=[],
+        ROOT_URLCONF='groups.tests.urls',
         SITE_ID=1,
         SECRET_KEY='this-is-just-for-tests-so-not-that-secret',
-        ROOT_URLCONF='groups.tests.urls',
-
-        RAPIDSMS_TABS=[],
-        INSTALLED_BACKENDS={},
+        TEMPLATE_CONTEXT_PROCESSORS=[
+            'django.contrib.auth.context_processors.auth',
+            'django.contrib.messages.context_processors.messages',
+            'django.core.context_processors.request',
+            'django.core.context_processors.static',
+        ],
     )
 
 
@@ -32,10 +51,13 @@ from django.test.utils import get_runner
 
 
 def runtests():
+    parser = optparse.OptionParser()
+    _, tests = parser.parse_args()
+    tests = tests or ['groups']
+
     TestRunner = get_runner(settings)
     test_runner = TestRunner(verbosity=1, interactive=True, failfast=False)
-    failures = test_runner.run_tests(['groups', ])
-    sys.exit(failures)
+    sys.exit(test_runner.run_tests(tests))
 
 
 if __name__ == '__main__':
