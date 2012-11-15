@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 required_packages = [
 	'django>=1.3',
 	'django-pagination==1.0.7',
-	'django-sorting==0.1'
+	'django-sorting==0.1',
 ]
 
 def read_file(filename):
@@ -25,7 +25,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     url='http://github.com/caktus/rapidsms-groups/',
-    license='<Include License Name>',
+    license='BSD',
     description=u' '.join(__import__('groups').__doc__.splitlines()).strip(),
     classifiers=[
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',

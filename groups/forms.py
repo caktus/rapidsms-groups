@@ -7,7 +7,6 @@ from groups.models import Group
 from groups.utils import format_number
 from groups.validators import validate_phone
 
-
 from rapidsms.models import Contact
 
 

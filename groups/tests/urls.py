@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 
 
 urlpatterns = patterns('',
-    url(r'^dashboard', 'rapidsms.views.dashboard', name='rapidsms-dashboard'),
+    url(r'^dashboard/', 'rapidsms.views.dashboard', name='rapidsms-dashboard'),
 
     (r'^account/', include('rapidsms.urls.login_logout')),
     (r'^groups/', include('groups.urls')),
