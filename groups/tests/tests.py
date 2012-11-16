@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
@@ -7,11 +9,11 @@ from rapidsms.models import Contact
 from rapidsms.tests.harness import MockRouter
 from rapidsms.messages.incoming import IncomingMessage
 
-from groups.tests.base import CreateDataTest, patch_settings
-
 from groups import forms as group_forms
-from groups.validators import validate_phone
 from groups.app import GroupsApp
+from groups.tests.base import CreateDataTest, patch_settings
+from groups.validators import validate_phone
+from groups.utils import normalize_number
 
 
 class GroupCreateDataTest(CreateDataTest):
@@ -112,17 +114,17 @@ class PhoneTest(GroupCreateDataTest):
         """
         normalized = '12223334444'
         number = '1-222-333-4444'
-        self.assertEqual(self.app._normalize_number(number), normalized)
+        self.assertEqual(normalize_number(number), normalized)
         number = '1 (222) 333-4444'
-        self.assertEqual(self.app._normalize_number(number), normalized)
+        self.assertEqual(normalize_number(number), normalized)
         with patch_settings(COUNTRY_CODE='66'):
             normalized = '662223334444'
             number = '22-23334444'
-            self.assertEqual(self.app._normalize_number(number), normalized)
+            self.assertEqual(normalize_number(number), normalized)
         with patch_settings(COUNTRY_CODE=None):
             normalized = '2223334444'
             number = '22-23334444'
-            self.assertEqual(self.app._normalize_number(number), normalized)
+            self.assertEqual(normalize_number(number), normalized)
 
     def test_contact_association(self):
         number = '1112223334444'

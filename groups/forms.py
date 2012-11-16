@@ -1,13 +1,15 @@
+#!/usr/bin/env python
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 import logging
 import re
 
 from django import forms
 
+from rapidsms.models import Contact
+
 from groups.models import Group
 from groups.utils import format_number
 from groups.validators import validate_phone
-
-from rapidsms.models import Contact
 
 
 __all__ = ('GroupForm', 'ContactForm', 'ForwardingRuleFormset',)
@@ -46,9 +48,8 @@ class GroupForm(forms.ModelForm):
 
 class ContactForm(forms.ModelForm):
     """ Form for managing contacts """
-
     groups = forms.ModelMultipleChoiceField(queryset=Group.objects.none())
-    phone = forms.CharField(validators=[validate_phone], required=True, widget=FancyPhoneInput)
+    phone = forms.CharField(validators=[validate_phone], widget=FancyPhoneInput)
 
     class Meta:
         model = Contact

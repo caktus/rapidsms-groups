@@ -1,16 +1,17 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.template import RequestContext
-from django.core.urlresolvers import reverse
-from django.db.models import Count
-from django.contrib.auth.decorators import login_required
-from django.db import transaction
+#!/usr/bin/env python
+# vim: ai ts=4 sts=4 et sw=4 encoding=utf-8
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.db import transaction
+from django.db.models import Count
+from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.shortcuts import render, get_object_or_404
 
 from rapidsms.models import Contact
 
-from .models import Group
-from .forms import GroupForm, ContactForm
+from groups.models import Group
+from groups.forms import GroupForm, ContactForm
 
 
 @login_required
