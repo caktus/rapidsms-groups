@@ -23,7 +23,6 @@
                 <th>{% anchor name Name %}</th>
                 <th>{% anchor email Email %}</th>
                 <th>{% anchor phone Phone %}</th>
-                <th>{% anchor is_patient "Is Patient?" %}</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -34,10 +33,9 @@
                     <td>{{ contact.name }}</td>
                     <td>{{ contact.email }}</td>
                     <td>{{ contact.formatted_phone }}</td>
-                    <td>{{ contact.is_patient|yesno|capfirst }}</td>
                     <td class='actions'>
                         <a class='button' title='Edit {{ contact.name }}' href='{% url edit-contact contact.pk %}'><span class='ui-icon ui-icon-pencil'></span></a>
-                        <a class='button' title='Delete {{ contact.name }}' href='{% url delete-contact contact.pk %}'><span class='ui-icon ui-icon-closethick'></span></a>    
+                        <a class='button' title='Delete {{ contact.name }}' href='{% url delete-contact contact.pk %}'><span class='ui-icon ui-icon-closethick'></span></a>
                     </td>
                 </tr>
             {% endfor %}

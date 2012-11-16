@@ -61,8 +61,7 @@ def delete_group(request, group_id):
 
 @login_required
 def list_contacts(request):
-    # filter out patient records
-    contacts = Contact.objects.annotate(is_patient=Count('patient'))
+    contacts = Contact.objects.all()
     context = {
         'contacts': contacts.order_by('name'),
     }
