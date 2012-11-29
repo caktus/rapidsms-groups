@@ -16,11 +16,10 @@ from groups.forms import GroupForm, ContactForm
 
 @login_required
 def list_groups(request):
-    groups = Group.objects.annotate(count=Count('contacts'))
-    context = {
-        'groups': groups.order_by('name'),
-    }
-    return render(request, 'groups/groups/list.html', context)
+    groups = Group.objects.annotate(count=Count('contacts')).order_by('name')
+    return render(request, 'groups/groups/list.html', {
+        'groups': groups,
+    })
 
 
 @login_required
@@ -35,15 +34,14 @@ def create_edit_group(request, group_id=None):
         form = GroupForm(request.POST, instance=group)
         if form.is_valid():
             form.save()
-            messages.info(request, "Group saved successfully")
+            messages.info(request, 'Group saved successfully')
             return HttpResponseRedirect(reverse('list-groups'))
     else:
         form = GroupForm(instance=group)
-    context = {
+    return render(request, 'groups/groups/create_edit.html', {
         'form': form,
         'group': group,
-    }
-    return render(request, 'groups/groups/create_edit.html', context)
+    })
 
 
 @login_required
@@ -56,17 +54,17 @@ def delete_group(request, group_id):
         group.delete()
         messages.info(request, 'Group successfully deleted')
         return HttpResponseRedirect(reverse('list-groups'))
-    context = {'group': group}
-    return render(request, 'groups/groups/delete.html', context)
+    return render(request, 'groups/groups/delete.html', {
+        'group': group,
+    })
 
 
 @login_required
 def list_contacts(request):
-    contacts = Contact.objects.all()
-    context = {
-        'contacts': contacts.order_by('name'),
-    }
-    return render(request, 'groups/contacts/list.html', context)
+    contacts = Contact.objects.all().order_by('name')
+    return render(request, 'groups/contacts/list.html', {
+        'contacts': contacts,
+    })
 
 
 @login_required
@@ -79,15 +77,14 @@ def create_edit_contact(request, contact_id=None):
         form = ContactForm(request.POST, instance=contact)
         if form.is_valid():
             form.save()
-            messages.info(request, "Contact saved successfully")
+            messages.info(request, 'Contact saved successfully')
             return HttpResponseRedirect(reverse('list-contacts'))
     else:
         form = ContactForm(instance=contact)
-    context = {
+    return render(request, 'groups/contacts/create_edit.html', {
         'form': form,
         'contact': contact,
-    }
-    return render(request, 'groups/contacts/create_edit.html', context)
+    })
 
 
 @login_required
@@ -98,5 +95,6 @@ def delete_contact(request, contact_id):
         contact.delete()
         messages.info(request, 'Contact successfully deleted')
         return HttpResponseRedirect(reverse('list-contacts'))
-    context = {'contact': contact}
-    return render(request, 'groups/contacts/delete.html', context)
+    return render(request, 'groups/contacts/delete.html', {
+        'contact': contact,
+    })
