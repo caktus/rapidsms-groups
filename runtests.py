@@ -20,8 +20,8 @@ if not settings.configured:
             'rapidsms',
             'rapidsms.contrib.messagelog',
             'groups',
-            'django_sorting',
             'pagination',
+            'sorter',
         ),
         INSTALLED_BACKENDS={},
         LOGIN_URL='/account/login/',
@@ -32,7 +32,6 @@ if not settings.configured:
             'django.contrib.auth.middleware.AuthenticationMiddleware',
             'django.contrib.messages.middleware.MessageMiddleware',
             'pagination.middleware.PaginationMiddleware',
-            'django_sorting.middleware.SortingMiddleware',
         ],
         RAPIDSMS_TABS=[],
         ROOT_URLCONF='groups.tests.urls',
@@ -44,6 +43,10 @@ if not settings.configured:
             'django.core.context_processors.request',
             'django.core.context_processors.static',
         ],
+        SORTER_ALLOWED_CRITERIA={
+            'sort_contacts': ['id', 'name', 'email', 'phone'],
+            'sort_groups': ['id', 'name', 'count'],
+        },
     )
 
 

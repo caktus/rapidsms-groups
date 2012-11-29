@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 required_packages = [
 	'django>=1.3',
 	'django-pagination==1.0.7',
-	'django-sorting==0.1',
+	'django-sorter==0.2',
 ]
 
 def read_file(filename):

@@ -1,5 +1,5 @@
 {% extends "groups/base.html" %}
-{% load pagination_tags sorting_tags %}
+{% load pagination_tags sorter_tags %}
 
 {% block title %}Groups{% endblock %}
 
@@ -8,27 +8,27 @@
 <div class='module'>
     <h2>Groups</h2>
     <p><a class='button add' title='Add group' href="{% url create-group %}" >Add group...</a></p>
-    {% autosort groups %}
+    {% sort groups with "groups" as sorted_groups %}
     {% autopaginate groups 15 %}
     <table class='sortable pagination'>
         <thead>
             <tr>
-                <th>{% anchor id ID %}</th>
-                <th>{% anchor name Name %}</th>
-                <th>{% anchor count "# Recipients" %}</th>
+                <th>{% sortlink with "groups" by "id" "-id" %}ID{% endsortlink %}</th>
+                <th>{% sortlink with "groups" by "name" "-name" %}Name{% endsortlink %}</th>
+                <th>{% sortlink with "groups" by "count" "-count" %}# Recipients{% endsortlink %}</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            {% for group in groups %}
+            {% for group in sorted_groups %}
                 <tr class="{% cycle 'odd' 'even' %}">
-                    <td>{{ group.pk }}</td>
+                    <td>{{ group.id }}</td>
                     <td>{{ group.name }}</td>
                     <td>{{ group.count }}</td>
                     <td class='actions'>
                         {% if group.is_editable %}
                             <a class='button' title='Edit {{ group.name }}' href='{% url edit-group group.pk %}'><span class='ui-icon ui-icon-pencil'></span></a>
-                            <a class='button' title='Delete {{ group.name }}' href='{% url delete-group group.pk %}'><span class='ui-icon ui-icon-closethick'></span></a>    
+                            <a class='button' title='Delete {{ group.name }}' href='{% url delete-group group.pk %}'><span class='ui-icon ui-icon-closethick'></span></a>
                         {% endif %}
                     </td>
                 </tr>
