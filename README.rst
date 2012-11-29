@@ -1,7 +1,61 @@
 rapidsms-groups
 ===============
 
-Welcome to the documentation for rapidsms-groups!
+rapidsms-groups integrates with the RapidSMS framework and allows you to
+define groups of Contacts.
+
+
+Getting Started
+---------------
+
+To add rapidsms-groups to an existing RapidSMS project, add it and its
+dependencies to your installed apps::
+
+    INSTALLED_APPS = [
+        ...
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'rapidsms',
+        'rapidsms.contrib.messagelog',
+        'groups',
+        'pagination',
+        'sorter',
+        ...
+    ]
+
+In addition to the default middleware classes, be sure to include pagination
+middleware::
+
+    MIDDLEWARE_CLASSES = [
+        ...
+        'pagination.middleware.PaginationMiddleware',
+        ...
+    ]
+
+Configure django_sorter::
+
+    SORTER_ALLOWED_CRITERIA = {
+        'sort_contacts': ['id', 'name', 'email', 'phone'],
+        'sort_groups': ['id', 'name', 'count'],
+    }
+
+Add contacts URLs to your urlconf::
+
+    urlpatterns += patterns('',
+        (r'^groups/', include('groups.urls')),
+    )
+
+Optionally, add links to groups and contacts in your ``RAPIDSMS_TABS`` setting::
+
+    RAPIDSMS_TABS += [
+        ('groups.views.list_groups', 'Groups'),
+        ('groups.views.list_contacts', 'Contacts'),
+    ]
+
+Finally, run syncdb or migrate::
+
+    python manage.py migrate groups
 
 
 Running the Tests
@@ -9,7 +63,7 @@ Running the Tests
 
 You can run the tests via::
 
-    python setup.py test
+    python runtests.py
 
 If you would like to run specific test(s), specify them as arguments to the
 command::
