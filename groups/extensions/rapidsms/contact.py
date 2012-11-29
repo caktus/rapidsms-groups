@@ -14,8 +14,7 @@ class ContactExtra(models.Model):
     title = models.CharField(max_length=64, blank=True)
 
     def save(self, **kwargs):
-        if hasattr(self, 'patient_set') and not self.patient_set.all().exists():
-            self.name = "%s %s" % (self.first_name, self.last_name)
+        self.name = '%s %s' % (self.first_name, self.last_name)
         super(ContactExtra, self).save(**kwargs)
 
     class Meta:
