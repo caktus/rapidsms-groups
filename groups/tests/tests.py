@@ -30,9 +30,9 @@ class GroupCreateDataTest(CreateDataTest):
             data = model_to_dict(instance)
         else:
             data = {
-                #'first_name': self.random_string(8),
-                #'last_name': self.random_string(8),
-                #'email': 'test@abc.com',
+                'first_name': self.random_string(8),
+                'last_name': self.random_string(8),
+                'email': 'test@abc.com',
                 'phone': '31112223333',
             }
         data.update(initial_data)
@@ -49,7 +49,7 @@ class GroupFormTest(GroupCreateDataTest):
         form = group_forms.ContactForm(data)
         self.assertTrue(form.is_valid())
         contact = form.save()
-        #self.assertEqual(contact.first_name, data['first_name'])
+        self.assertEqual(contact.first_name, data['first_name'])
         self.assertEqual(contact.groups.count(), 1)
         self.assertTrue(contact.groups.filter(pk=group1.pk).exists())
         self.assertFalse(contact.groups.filter(pk=group2.pk).exists())
