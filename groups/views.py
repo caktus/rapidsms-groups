@@ -8,10 +8,8 @@ from django.db.models import Count
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 
-from rapidsms.models import Contact
-
-from groups.models import Group
-from groups.forms import GroupForm, ContactForm
+from groups.models import GroupContact, Group
+from groups.forms import GroupForm, GroupContactForm
 
 
 @login_required
@@ -61,7 +59,7 @@ def delete_group(request, group_id):
 
 @login_required
 def list_contacts(request):
-    contacts = Contact.objects.all().order_by('name')
+    contacts = GroupContact.objects.all().order_by('last_name')
     return render(request, 'groups/contacts/list.html', {
         'contacts': contacts,
     })
@@ -72,15 +70,15 @@ def list_contacts(request):
 def create_edit_contact(request, contact_id=None):
     contact = None
     if contact_id:
-        contact = get_object_or_404(Contact, pk=contact_id)
+        contact = get_object_or_404(GroupContact, pk=contact_id)
     if request.method == 'POST':
-        form = ContactForm(request.POST, instance=contact)
+        form = GroupContactForm(request.POST, instance=contact)
         if form.is_valid():
             form.save()
             messages.info(request, 'Contact saved successfully')
             return HttpResponseRedirect(reverse('list-contacts'))
     else:
-        form = ContactForm(instance=contact)
+        form = GroupContactForm(instance=contact)
     return render(request, 'groups/contacts/create_edit.html', {
         'form': form,
         'contact': contact,

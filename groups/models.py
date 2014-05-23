@@ -17,7 +17,8 @@ class GroupContact(models.Model):
     title = models.CharField(max_length=64, blank=True)
 
     def save(self, **kwargs):
-        self.name = '%s %s' % (self.first_name, self.last_name)
+        contact_name = '%s %s' % (self.first_name, self.last_name)
+        Contact.objects.filter(pk=self.contact.pk).update(name=contact_name)
         super(GroupContact, self).save(**kwargs)
 
     @property
@@ -31,7 +32,7 @@ class Group(models.Model):
     description = models.TextField(blank=True)
     is_editable = models.BooleanField(default=True)
 
-    contacts = models.ManyToManyField(GroupContact, related_name='groups',
+    group_contacts = models.ManyToManyField(GroupContact, related_name='groups',
                                       blank=True)
 
     def __unicode__(self):

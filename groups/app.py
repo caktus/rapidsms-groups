@@ -3,6 +3,7 @@
 from rapidsms.apps.base import AppBase
 from rapidsms.models import Contact
 
+from groups.models import GroupContact
 from groups.utils import normalize_number
 
 
@@ -12,16 +13,17 @@ class GroupsApp(AppBase):
         normalized_number = normalize_number(connection.identity)
         self.debug('Normalized number: {0}'.format(normalized_number))
         try:
-            contact = Contact.objects.get(phone=normalized_number)
-        except Contact.DoesNotExist:
+            group_contact = GroupContact.objects.get(phone=normalized_number)
+        except GroupContact.DoesNotExist:
             self.debug('Failed to find matching contact')
-            contact = None
-        if contact:
-            self.debug('Associating connection to {0}'.format(contact))
-            connection.contact = contact
+            group_contact = None
+        if group_contact:
+            self.debug('Associating connection to {0}'.format(group_contact.contact))
+            connection.contact = group_contact.contact
             connection.save()
 
     def filter(self, msg):
-        if not msg.connection.contact:
-            self.debug('Found {0} without contact'.format(msg.connection))
-            self._associate_contact(msg.connection)
+        # XXX for some reason msg.connections is an instance rather than a list; need to figure out why
+        if not msg.connections.contact:
+            self.debug('Found {0} without contact'.format(msg.connections))
+            self._associate_contact(msg.connections)

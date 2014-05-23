@@ -10,6 +10,7 @@ from rapidsms.tests.harness import MockRouter
 from rapidsms.messages.incoming import IncomingMessage
 
 from groups import forms as group_forms
+from groups.models import GroupContact
 from groups.app import GroupsApp
 from groups.tests.base import CreateDataTest, patch_settings
 from groups.validators import validate_phone
@@ -18,11 +19,11 @@ from groups.utils import normalize_number
 
 class GroupCreateDataTest(CreateDataTest):
 
-    def create_contact(self, data={}):
+    def create_group_contact(self, data={}):
         """ Override super's create_contact to include extension fields """
         defaults = self._data()
         defaults.update(data)
-        return Contact.objects.create(**defaults)
+        return GroupContact.objects.create(**defaults)
 
     def _data(self, initial_data={}, instance=None):
         """ Helper function to generate form-like POST data """
@@ -30,6 +31,7 @@ class GroupCreateDataTest(CreateDataTest):
             data = model_to_dict(instance)
         else:
             data = {
+                'contact': Contact.objects.create(),
                 'first_name': self.random_string(8),
                 'last_name': self.random_string(8),
                 'email': 'test@abc.com',
@@ -46,7 +48,8 @@ class GroupFormTest(GroupCreateDataTest):
         group1 = self.create_group()
         group2 = self.create_group()
         data = self._data({'groups': [group1.pk]})
-        form = group_forms.ContactForm(data)
+        data['contact'] = data['contact'].pk
+        form = group_forms.GroupContactForm(data)
         self.assertTrue(form.is_valid())
         contact = form.save()
         self.assertEqual(contact.first_name, data['first_name'])
@@ -58,15 +61,15 @@ class GroupFormTest(GroupCreateDataTest):
         """ Test contact edit functionality with form """
         group1 = self.create_group()
         group2 = self.create_group()
-        contact = self.create_contact()
-        contact.groups.add(group1)
-        data = self._data({'groups': [group2.pk]}, instance=contact)
-        form = group_forms.ContactForm(data, instance=contact)
+        group_contact = self.create_group_contact()
+        group_contact.groups.add(group1)
+        data = self._data({'groups': [group2.pk]}, instance=group_contact)
+        form = group_forms.GroupContactForm(data, instance=group_contact)
         self.assertTrue(form.is_valid(), dict(form.errors))
-        contact = form.save()
-        self.assertEqual(contact.groups.count(), 1)
-        self.assertFalse(contact.groups.filter(pk=group1.pk).exists())
-        self.assertTrue(contact.groups.filter(pk=group2.pk).exists())
+        group_contact = form.save()
+        self.assertEqual(group_contact.groups.count(), 1)
+        self.assertFalse(group_contact.groups.filter(pk=group1.pk).exists())
+        self.assertTrue(group_contact.groups.filter(pk=group2.pk).exists())
 
 
 class GroupViewTest(CreateDataTest):
@@ -128,10 +131,11 @@ class PhoneTest(GroupCreateDataTest):
 
     def test_contact_association(self):
         number = '1112223334444'
-        contact = self.create_contact({'phone': number})
-        other_contact = self.create_contact()
+        group_contact = self.create_group_contact({'phone': number})
+        other_contact = self.create_group_contact()
         connection = self.create_connection({'backend': self.backend,
                                              'identity': '+111-222-333-4444'})
         msg = self._send(connection, 'test')
-        self.assertEqual(msg.connection.contact_id, contact.id)
-        self.assertNotEqual(msg.connection.contact_id, other_contact.id)
+        # XXX for some reason msg.connections is an instance rather than a list, not sure why
+        self.assertEqual(msg.connections.contact_id, group_contact.contact.id)
+        self.assertNotEqual(msg.connections.contact_id, other_contact.contact.id)

@@ -7,7 +7,7 @@ from django import forms
 
 from rapidsms.models import Contact
 
-from groups.models import Group
+from groups.models import GroupContact, Group
 from groups.utils import format_number
 from groups.validators import validate_phone
 
@@ -40,27 +40,27 @@ class GroupForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(GroupForm, self).__init__(*args, **kwargs)
-        self.fields['contacts'].help_text = ''
+        self.fields['group_contacts'].help_text = ''
         qs = Contact.objects.filter().order_by('name')
-        self.fields['contacts'].queryset = qs
-        self.fields['contacts'].widget.attrs['class'] = 'horitzonal-multiselect'
+        self.fields['group_contacts'].queryset = qs
+        self.fields['group_contacts'].widget.attrs['class'] = 'horitzonal-multiselect'
 
 
-class ContactForm(forms.ModelForm):
+class GroupContactForm(forms.ModelForm):
     """ Form for managing contacts """
     groups = forms.ModelMultipleChoiceField(queryset=Group.objects.none())
     phone = forms.CharField(validators=[validate_phone], widget=FancyPhoneInput)
 
     class Meta:
-        model = Contact
-        exclude = ('language', 'name', 'primary_backend', 'pin')
+        model = GroupContact
+        #exclude = ('language', 'name', 'primary_backend', 'pin')
 
     def __init__(self, *args, **kwargs):
         instance = kwargs.get('instance')
         if instance and instance.pk:
             pks = instance.groups.values_list('pk', flat=True)
             kwargs['initial'] = {'groups': list(pks)}
-        super(ContactForm, self).__init__(*args, **kwargs)
+        super(GroupContactForm, self).__init__(*args, **kwargs)
         self.fields['groups'].widget = forms.CheckboxSelectMultiple()
         self.fields['groups'].queryset = Group.objects.order_by('name')
         self.fields['groups'].required = False
@@ -68,6 +68,6 @@ class ContactForm(forms.ModelForm):
             self.fields[name].required = True
 
     def save(self, commit=True):
-        instance = super(ContactForm, self).save()
+        instance = super(GroupContactForm, self).save()
         instance.groups = self.cleaned_data['groups']
         return instance
