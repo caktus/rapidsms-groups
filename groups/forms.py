@@ -53,7 +53,7 @@ class ContactForm(forms.ModelForm):
 
     class Meta:
         model = Contact
-        exclude = ('language', 'name', 'primary_backend', 'pin')
+        exclude = ('language', 'primary_backend', 'pin')
 
     def __init__(self, *args, **kwargs):
         instance = kwargs.get('instance')
@@ -64,7 +64,7 @@ class ContactForm(forms.ModelForm):
         self.fields['groups'].widget = forms.CheckboxSelectMultiple()
         self.fields['groups'].queryset = Group.objects.order_by('name')
         self.fields['groups'].required = False
-        for name in ('first_name', 'last_name', 'phone'):
+        for name in ('name', 'phone'):
             self.fields[name].required = True
 
     def save(self, commit=True):
