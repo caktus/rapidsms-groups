@@ -13,7 +13,7 @@
 
 <div class='module'>
     <h2>Contacts ({{ contacts.count }} total)</h2>
-    <p><a class='button add' title='Add contact' href="{% url create-contact %}">Add contact...</a></p>
+    <p><a class='button add' title='Add contact' href="{% url "create-contact" %}">Add contact...</a></p>
     {% sort contacts with "contacts" as sorted_contacts %}
     {% autopaginate contacts 15 %}
     <table class='sortable pagination'>
@@ -34,8 +34,8 @@
                     <td>{{ contact.email }}</td>
                     <td>{{ contact.formatted_phone }}</td>
                     <td class='actions'>
-                        <a class='button' title='Edit {{ contact.name }}' href='{% url edit-contact contact.pk %}'><span class='ui-icon ui-icon-pencil'></span></a>
-                        <a class='button' title='Delete {{ contact.name }}' href='{% url delete-contact contact.pk %}'><span class='ui-icon ui-icon-closethick'></span></a>
+                        <a class='button' title='Edit {{ contact.name }}' href='{% url "edit-contact" contact.pk %}'><span class='ui-icon ui-icon-pencil'></span></a>
+                        <a class='button' title='Delete {{ contact.name }}' href='{% url "delete-contact" contact.pk %}'><span class='ui-icon ui-icon-closethick'></span></a>
                     </td>
                 </tr>
             {% endfor %}

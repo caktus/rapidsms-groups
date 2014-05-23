@@ -7,7 +7,7 @@
 
 <div class='module'>
     <h2>Groups</h2>
-    <p><a class='button add' title='Add group' href="{% url create-group %}" >Add group...</a></p>
+    <p><a class='button add' title='Add group' href="{% url "create-group" %}" >Add group...</a></p>
     {% sort groups with "groups" as sorted_groups %}
     {% autopaginate groups 15 %}
     <table class='sortable pagination'>
@@ -27,8 +27,8 @@
                     <td>{{ group.count }}</td>
                     <td class='actions'>
                         {% if group.is_editable %}
-                            <a class='button' title='Edit {{ group.name }}' href='{% url edit-group group.pk %}'><span class='ui-icon ui-icon-pencil'></span></a>
-                            <a class='button' title='Delete {{ group.name }}' href='{% url delete-group group.pk %}'><span class='ui-icon ui-icon-closethick'></span></a>
+                            <a class='button' title='Edit {{ group.name }}' href='{% url "edit-group" group.pk %}'><span class='ui-icon ui-icon-pencil'></span></a>
+                            <a class='button' title='Delete {{ group.name }}' href='{% url "delete-group" group.pk %}'><span class='ui-icon ui-icon-closethick'></span></a>
                         {% endif %}
                     </td>
                 </tr>
