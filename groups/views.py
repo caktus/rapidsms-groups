@@ -14,7 +14,7 @@ from groups.forms import GroupForm, GroupContactForm
 
 @login_required
 def list_groups(request):
-    groups = Group.objects.annotate(count=Count('contacts')).order_by('name')
+    groups = Group.objects.annotate(count=Count('group_contacts')).order_by('name')
     return render(request, 'groups/groups/list.html', {
         'groups': groups,
     })

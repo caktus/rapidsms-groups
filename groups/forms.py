@@ -40,6 +40,7 @@ class GroupForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(GroupForm, self).__init__(*args, **kwargs)
+        self.fields['group_contacts'].label = 'Contacts'
         self.fields['group_contacts'].help_text = ''
         qs = Contact.objects.filter().order_by('name')
         self.fields['group_contacts'].queryset = qs
@@ -53,7 +54,7 @@ class GroupContactForm(forms.ModelForm):
 
     class Meta:
         model = GroupContact
-        #exclude = ('language', 'name', 'primary_backend', 'pin')
+        exclude = ('contact',)
 
     def __init__(self, *args, **kwargs):
         instance = kwargs.get('instance')
@@ -67,7 +68,9 @@ class GroupContactForm(forms.ModelForm):
         for name in ('first_name', 'last_name', 'phone'):
             self.fields[name].required = True
 
-    def save(self, commit=True):
+    def save(self):
+        if not self.instance.pk:
+            self.instance.contact = Contact.objects.create()
         instance = super(GroupContactForm, self).save()
         instance.groups = self.cleaned_data['groups']
         return instance
