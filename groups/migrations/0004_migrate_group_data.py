@@ -6,13 +6,20 @@ from django.db import models
 
 class Migration(DataMigration):
 
+    def prompt_user(self):
+        answer = raw_input("This migration does not currently save pre-existing group data. IF YOU CONTINUE ALL GROUP/CONTACT ASSOCIATIONS WILL BE ERASED. Do you want to continue? (yes/NO)")
+        if answer != 'yes':
+            raise Exception("Aborting migration per user request. To add a migration, submit a pull request via GitHub.")
+
     def forwards(self, orm):
         "Write your forwards methods here."
         # XXX need to migrate data from old M2M table to new M2M table
+        self.prompt_user()
 
     def backwards(self, orm):
         "Write your backwards methods here."
         # XXX need to migrate data from new M2M table to old M2M table
+        self.prompt_user()
 
     models = {
         u'groups.group': {
