@@ -14,12 +14,12 @@ class Migration(DataMigration):
     def forwards(self, orm):
         "Write your forwards methods here."
         # XXX need to migrate data from old M2M table to new M2M table
-        self.prompt_user()
+        #self.prompt_user()
 
     def backwards(self, orm):
         "Write your backwards methods here."
         # XXX need to migrate data from new M2M table to old M2M table
-        self.prompt_user()
+        #self.prompt_user()
 
     models = {
         u'groups.group': {
